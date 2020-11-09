@@ -76,7 +76,7 @@ public class ParkingDataBaseIT {
         assertFalse(ticket.getOutTime().before(ticket.getInTime())); // date de sortie bien renseignée et pas avant la date d'entrée.
         assertEquals(ticket.getPrice(), 0);
         
-        //TODO: check that the fare generated and out time are populated correctly in the database
+        //TODO: check that the fare generated and out time are populated correctly in the database.
     }
 
 }
