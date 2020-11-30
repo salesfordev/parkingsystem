@@ -23,9 +23,9 @@ public class FareCalculatorServiceTest {
     @BeforeAll
     private static void setUp() {
         fareCalculatorService = new FareCalculatorService();
-        TicketDAO ticketDAO = new TicketDAO();
+        /*TicketDAO ticketDAO = new TicketDAO();
         ticketDAO.dataBaseConfig = new DataBaseTestConfig();
-        fareCalculatorService.ticketDAO = ticketDAO;
+        fareCalculatorService.ticketDAO = ticketDAO;*/
     }
 
     @BeforeEach
@@ -34,9 +34,10 @@ public class FareCalculatorServiceTest {
     }
 
     @Test
+    // Test du prix pour une heure de stationnement
     public void calculateFareCar(){
         Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  60 * 60 * 1000) );
+        inTime.setTime( System.currentTimeMillis() - (  60 * 60 * 1000) ); 
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
 
@@ -62,6 +63,7 @@ public class FareCalculatorServiceTest {
     }
 
     @Test
+    // Une exception est levée quand parkingType est null(ni bike ni car)
     public void calculateFareUnkownType(){
         Date inTime = new Date();
         inTime.setTime( System.currentTimeMillis() - (  60 * 60 * 1000) );
@@ -71,10 +73,11 @@ public class FareCalculatorServiceTest {
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
-        assertThrows(NullPointerException.class, () -> fareCalculatorService.calculateFare(ticket));
+        assertThrows(NullPointerException.class, () -> fareCalculatorService.calculateFare(ticket)); // on attent une nullPointer exception lors du lancement de la méthode CalculateFare()
     }
 
     @Test
+    // Lorsque la date d'entrée est plus tard que la date de sortie on léve une IllegalArgumentException
     public void calculateFareBikeWithFutureInTime(){
         Date inTime = new Date();
         inTime.setTime( System.currentTimeMillis() + (  60 * 60 * 1000) );
@@ -178,12 +181,18 @@ public class FareCalculatorServiceTest {
         inTime.setTime( System.currentTimeMillis() - (  60 * 60 * 1000) );
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
-
+        TicketDAO ticketDao = new TicketDAO();
+        ticketDao.dataBaseConfig = new DataBaseTestConfig();
+        
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
         ticket.setVehicleRegNumber("ABCDEF");
+        ticketDao.saveTicket(ticket);
+        ticketDao.updateTicket(ticket);
         fareCalculatorService.calculateFare(ticket);
         assertEquals(Fare.BIKE_RATE_PER_HOUR-(Fare.BIKE_RATE_PER_HOUR*0.05), ticket.getPrice() );
     }
+    
+   
 }
