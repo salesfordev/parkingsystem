@@ -9,7 +9,8 @@ import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.model.ParkingSpot;
 
 class ParkingSpotTest {
-
+	
+	// check that the place numbers are not identical
 	@Test
 	void testNotEqual() {
 		ParkingSpot p1 = new ParkingSpot(1, ParkingType.CAR, false);
@@ -19,6 +20,8 @@ class ParkingSpotTest {
 		
 		assertFalse(p1.equals(p2));
 	}
+	
+	// check that the place numbers are identical
 	@Test
 	void testEqual() {
 		ParkingSpot p1 = new ParkingSpot(1, ParkingType.CAR, false);
@@ -26,6 +29,7 @@ class ParkingSpotTest {
 		assertTrue(p1.equals(p2));
 	}
 	
+	// check that the place number is not null
 	@Test
 	void testNull() {
 		ParkingSpot p1 = new ParkingSpot(1, ParkingType.CAR, false);
