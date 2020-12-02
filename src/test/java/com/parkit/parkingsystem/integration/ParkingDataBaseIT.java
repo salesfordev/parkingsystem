@@ -57,7 +57,7 @@ public class ParkingDataBaseIT {
 
     @Test
     public void testParkingACar(){ 
-    	int placeNumber = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR); // récupére le numéro de place disponible
+    	int placeNumber = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR); // retrieve the available Slot number
     	ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO); 
         parkingService.processIncomingVehicle();
         Ticket ticket = ticketDAO.getTicket("ABCDEF");
