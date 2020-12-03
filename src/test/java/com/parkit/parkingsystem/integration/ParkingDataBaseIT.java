@@ -54,7 +54,8 @@ public class ParkingDataBaseIT {
     private static void tearDown(){
 
     }
-
+    
+    //Check that a ticket is actualy saved in DB and Parking table is updated with availability.
     @Test
     public void testParkingACar(){ 
     	int placeNumber = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR); // retrieve the available Slot number
@@ -64,19 +65,20 @@ public class ParkingDataBaseIT {
         int placeNumber2 = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
         assertNotNull(ticket.getId());
         assertNotEquals(placeNumber2, placeNumber);
-        //TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability
+        
     }
-
+    
+    //Check that the fare generated and out time are populated correctly in the database.
     @Test
     public void testParkingLotExit(){
         testParkingACar();
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processExitingVehicle();
         Ticket ticket = ticketDAO.getTicket("ABCDEF");
-        assertFalse(ticket.getOutTime().before(ticket.getInTime())); // date de sortie bien renseignée et pas avant la date d'entrée.
+        assertFalse(ticket.getOutTime().before(ticket.getInTime())); //Exit date filled in and not before the entry date. 
         assertEquals(ticket.getPrice(), 0);
-        
-        //TODO: check that the fare generated and out time are populated correctly in the database.
+             
     }
 
 }
+
